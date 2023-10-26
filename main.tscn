@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://blxrcs1nc40rl"]
+
+[ext_resource type="Script" path="res://node_log.gd" id="1_5ie4v"]
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_5ie4v")
+
+[node name="parent 1" type="Node3D" parent="."]
+script = ExtResource("1_5ie4v")
+
+[node name="p1 child 1" type="Node3D" parent="parent 1"]
+script = ExtResource("1_5ie4v")
+
+[node name="p1 child 2" type="Node3D" parent="parent 1"]
+script = ExtResource("1_5ie4v")
+
+[node name="parent 2" type="Node3D" parent="."]
+script = ExtResource("1_5ie4v")
+
+[node name="p2 child" type="Node3D" parent="parent 2"]
+script = ExtResource("1_5ie4v")
