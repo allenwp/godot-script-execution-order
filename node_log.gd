@@ -1,5 +1,7 @@
 class_name NodeLog extends Node
 
+const MAX_PROCESS_COUNT: int = 3
+
 static var init_count: int = 0
 static var static_member: int = 42
 
@@ -48,10 +50,10 @@ func _notification(what: int) -> void:
 		NOTIFICATION_INTERNAL_PROCESS:
 			print(name, ": _notification(NOTIFICATION_INTERNAL_PROCESS)")
 		NOTIFICATION_PROCESS:
-			if process_count < 5:
+			if process_count < MAX_PROCESS_COUNT:
 				print(name, ": _notification(NOTIFICATION_PROCESS)")
 		NOTIFICATION_PHYSICS_PROCESS:
-			if physics_process_count < 5:
+			if physics_process_count < MAX_PROCESS_COUNT:
 				print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
 		NOTIFICATION_PARENTED:
 			print(name, ": _notification(NOTIFICATION_PARENTED)")
@@ -78,7 +80,8 @@ func _notification(what: int) -> void:
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			print(name, ": _notification(NOTIFICATION_WM_CLOSE_REQUEST)")
 		Node2D.NOTIFICATION_DRAW:
-			print(name, ": _notification(NOTIFICATION_DRAW)")
+			if draw_count < MAX_PROCESS_COUNT:
+				print(name, ": _notification(NOTIFICATION_DRAW)")
 		Node2D.NOTIFICATION_ENTER_CANVAS:
 			print(name, ": _notification(NOTIFICATION_ENTER_CANVAS)")
 		Node2D.NOTIFICATION_VISIBILITY_CHANGED:
@@ -114,16 +117,16 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if process_count < 3:
+	if process_count < MAX_PROCESS_COUNT:
 		process_count += 1
 		print(name, ": _process()")
 
 func _physics_process(_delta: float) -> void:
-	if physics_process_count < 3:
+	if physics_process_count < MAX_PROCESS_COUNT:
 		physics_process_count += 1
 		print(name, ": _physics_process()")
 
 func _draw() -> void:
-	if draw_count < 3:
+	if draw_count < MAX_PROCESS_COUNT:
 		draw_count += 1
 		print(name, ": _draw()")
