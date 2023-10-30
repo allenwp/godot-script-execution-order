@@ -6,18 +6,16 @@
 script = ExtResource("1_5ie4v")
 export_member = 1
 
-[node name="parent 1 (2)" type="Button" parent="."]
-text = "Toggle Process Logging"
+[node name="parent 1 (2)" type="Node3D" parent="."]
 script = ExtResource("1_5ie4v")
-is_process_toggle = true
+is_instantiate_packed_scene = true
 export_member = 2
 
-[node name="child 1 prt 1 (3)" type="Node3D" parent="parent 1 (2)"]
+[node name="child 1 prt 1 (3)" type="Node2D" parent="parent 1 (2)"]
 script = ExtResource("1_5ie4v")
 export_member = 3
 
 [node name="child 2 prt 2 (4)" type="Button" parent="parent 1 (2)"]
-layout_mode = 0
 offset_top = 80.0
 offset_right = 151.0
 offset_bottom = 111.0
@@ -38,19 +36,14 @@ script = ExtResource("1_5ie4v")
 is_input_toggle = true
 export_member = 6
 
-[node name="child 2 prt 2 (7)" type="Button" parent="parent 2 (5)"]
-offset_top = 120.0
-offset_right = 151.0
-offset_bottom = 151.0
-text = "Instantiate Packed Scene"
+[node name="child 2 prt 2 (7)" type="Node3D" parent="parent 2 (5)"]
 script = ExtResource("1_5ie4v")
 export_member = 7
 
 [connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="." method="_custom_sig"]
-[connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="parent 1 (2)" method="_custom_sig"]
 [connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="parent 2 (5)" method="_custom_sig"]
-[connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="parent 2 (5)/child 1 prt 2 (6)" method="_custom_sig"]
 [connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="parent 2 (5)/child 2 prt 2 (7)" method="_custom_sig"]
+[connection signal="sig" from="parent 1 (2)/child 1 prt 1 (3)" to="parent 1 (2)" method="_custom_sig"]
 [connection signal="button_down" from="parent 1 (2)/child 2 prt 2 (4)" to="parent 1 (2)/child 2 prt 2 (4)" method="_button_down_sig"]
 [connection signal="button_up" from="parent 1 (2)/child 2 prt 2 (4)" to="parent 1 (2)/child 2 prt 2 (4)" method="_button_up_sig"]
 [connection signal="pressed" from="parent 1 (2)/child 2 prt 2 (4)" to="parent 1 (2)/child 2 prt 2 (4)" method="_pressed_sig"]

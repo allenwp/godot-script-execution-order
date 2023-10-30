@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgm41eva1kxxv"]
+
+[ext_resource type="Script" path="res://static_members.gd" id="1_h5i36"]
+
+[node name="StaticMembers" type="Node"]
+script = ExtResource("1_h5i36")

@@ -2,18 +2,20 @@ class_name NodeLog extends Node
 
 static var init_count: int = 0
 static var static_member: int = 42
+static var process_logging: bool = true
+static var input_logging: bool = true
+
+@export var is_input_toggle: bool = false
+@export var is_instantiate_packed_scene: bool = false
+
+signal sig
 
 var self_init_number: int = 0
 
 var process_count: int = 0
 var physics_process_count: int = 0
 
-@export var is_process_toggle: bool = false
-@export var is_input_toggle: bool = false
-static var process_logging: bool = true
-static var input_logging: bool = true
-
-signal sig
+var new_scene: Node = null
 
 var member: int = 42
 var property_member: int = 42:
@@ -163,15 +165,26 @@ func _process(_delta: float) -> void:
 	if process_count % 100 == 0 && sig.get_connections().size() > 0:
 		print(name, ": emitting signal!")
 		sig.emit()
+	if process_count % 102 == 0 && is_instantiate_packed_scene:
+		if new_scene == null:
+			print(name, ": instantiating packed scene")
+			new_scene = (StaticMembersAutoload as StaticMembers).MainScn.instantiate()
+			print(name, ": add_child(new_scene)")
+			add_child(new_scene)
+			print(name, ": add_child(new_scene) complete!")
+			var logger: NodeLog = new_scene.get_child(0) as NodeLog
+			logger.is_instantiate_packed_scene = false # disable creation of new scene by child
+		else:
+			print(name, ": queue_free() on new_scene")
+			new_scene.queue_free()
+			new_scene = null
 
 func _draw() -> void:
 	print(name, ": _draw()")
 
 func _pressed() -> void:
 	print(name, ": _pressed()")
-	if is_process_toggle:
-		process_logging = !process_logging
-	elif is_input_toggle:
+	if is_input_toggle:
 		input_logging = !input_logging
 
 func _button_down_sig() -> void:
@@ -187,4 +200,4 @@ func _toggled_sig(toggled_on: bool) -> void:
 	print(name, ": _toggled_sig(", toggled_on, ")")
 
 func _custom_sig() -> void:
-	print(name, ": recieved signal!")
+	print(name, ": received signal!")
