@@ -49,8 +49,14 @@ func _notification(what: int) -> void:
 		match what:
 			Control.NOTIFICATION_FOCUS_ENTER:
 				print(name, ": _notification(Control.NOTIFICATION_FOCUS_ENTER)")
+			Control.NOTIFICATION_FOCUS_EXIT:
+				print(name, ": _notification(Control.NOTIFICATION_FOCUS_EXIT)")
 			Control.NOTIFICATION_MOUSE_ENTER:
 				print(name, ": _notification(Control.NOTIFICATION_MOUSE_ENTER)")
+			Control.NOTIFICATION_MOUSE_EXIT:
+				print(name, ": _notification(Control.NOTIFICATION_MOUSE_EXIT)")
+			Control.NOTIFICATION_THEME_CHANGED:
+				print(name, ": _notification(Control.NOTIFICATION_THEME_CHANGED)")
 			_:
 				matched = false
 		if matched:
@@ -63,6 +69,8 @@ func _notification(what: int) -> void:
 				print(name, ": _notification(CanvasItem.NOTIFICATION_DRAW)")
 			CanvasItem.NOTIFICATION_ENTER_CANVAS:
 				print(name, ": _notification(CanvasItem.NOTIFICATION_ENTER_CANVAS)")
+			CanvasItem.NOTIFICATION_EXIT_CANVAS:
+				print(name, ": _notification(CanvasItem.NOTIFICATION_EXIT_CANVAS)")
 			CanvasItem.NOTIFICATION_VISIBILITY_CHANGED:
 				print(name, ": _notification(CanvasItem.NOTIFICATION_VISIBILITY_CHANGED)")
 			CanvasItem.NOTIFICATION_TRANSFORM_CHANGED:
@@ -77,6 +85,8 @@ func _notification(what: int) -> void:
 		match what:
 			Node3D.NOTIFICATION_ENTER_WORLD:
 				print(name, ": _notification(Node3D.NOTIFICATION_ENTER_WORLD)")
+			Node3D.NOTIFICATION_EXIT_WORLD:
+				print(name, ": _notification(Node3D.NOTIFICATION_EXIT_WORLD)")
 			Node3D.NOTIFICATION_TRANSFORM_CHANGED:
 				print(name, ": _notification(Node3D.NOTIFICATION_TRANSFORM_CHANGED)")
 			_:
@@ -85,6 +95,10 @@ func _notification(what: int) -> void:
 			return
 
 	match what:
+		PROCESS_MODE_INHERIT:
+			print(name, ": _notification(PROCESS_MODE_INHERIT)")
+		PROCESS_MODE_PAUSABLE:
+			print(name, ": _notification(PROCESS_MODE_PAUSABLE)")
 		NOTIFICATION_READY:
 			print(name, ": _notification(NOTIFICATION_READY)")
 		NOTIFICATION_ENTER_TREE:
@@ -105,6 +119,8 @@ func _notification(what: int) -> void:
 				print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
 		NOTIFICATION_PARENTED:
 			print(name, ": _notification(NOTIFICATION_PARENTED)")
+		NOTIFICATION_UNPARENTED:
+			print(name, ": _notification(NOTIFICATION_UNPARENTED)")
 		NOTIFICATION_CHILD_ORDER_CHANGED:
 			print(name, ": _notification(NOTIFICATION_CHILD_ORDER_CHANGED)")
 		NOTIFICATION_SCENE_INSTANTIATED:
