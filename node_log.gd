@@ -9,7 +9,11 @@ var self_init_number: int = 0
 
 var process_count: int = 0
 var physics_process_count: int = 0
-var draw_count: int = 0
+
+@export var is_process_toggle: bool = false
+@export var is_input_toggle: bool = false
+static var process_logging: bool = true
+static var input_logging: bool = true
 
 var member: int = 42
 var property_member: int = 42:
@@ -36,6 +40,46 @@ static func _static_init() -> void:
 	print("NodeLog: _static_init() (static_member: ", static_member, ")")
 
 func _notification(what: int) -> void:
+	var matched := true
+	if is_instance_of(self, Control):
+		match what:
+			Control.NOTIFICATION_FOCUS_ENTER:
+				print(name, ": _notification(Control.NOTIFICATION_FOCUS_ENTER)")
+			Control.NOTIFICATION_MOUSE_ENTER:
+				print(name, ": _notification(Control.NOTIFICATION_MOUSE_ENTER)")
+			_:
+				matched = false
+	if matched:
+		return
+
+	matched = true
+	if is_instance_of(self, CanvasItem):
+		match what:
+			CanvasItem.NOTIFICATION_DRAW:
+				print(name, ": _notification(CanvasItem.NOTIFICATION_DRAW)")
+			CanvasItem.NOTIFICATION_ENTER_CANVAS:
+				print(name, ": _notification(CanvasItem.NOTIFICATION_ENTER_CANVAS)")
+			CanvasItem.NOTIFICATION_VISIBILITY_CHANGED:
+				print(name, ": _notification(CanvasItem.NOTIFICATION_VISIBILITY_CHANGED)")
+			CanvasItem.NOTIFICATION_TRANSFORM_CHANGED:
+				print(name, ": _notification(CanvasItem.NOTIFICATION_TRANSFORM_CHANGED)")
+			_:
+				matched = false
+	if matched:
+		return
+
+	matched = true
+	if is_instance_of(self, Node3D):
+		match what:
+			Node3D.NOTIFICATION_ENTER_WORLD:
+				print(name, ": _notification(Node3D.NOTIFICATION_ENTER_WORLD)")
+			Node3D.NOTIFICATION_TRANSFORM_CHANGED:
+				print(name, ": _notification(Node3D.NOTIFICATION_TRANSFORM_CHANGED)")
+			_:
+				matched = false
+	if matched:
+		return
+
 	match what:
 		NOTIFICATION_READY:
 			print(name, ": _notification(NOTIFICATION_READY)")
@@ -79,31 +123,24 @@ func _notification(what: int) -> void:
 			print(name, ": _notification(NOTIFICATION_NODE_RECACHE_REQUESTED)")
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			print(name, ": _notification(NOTIFICATION_WM_CLOSE_REQUEST)")
-		Node2D.NOTIFICATION_DRAW:
-			if draw_count < MAX_PROCESS_COUNT:
-				print(name, ": _notification(NOTIFICATION_DRAW)")
-		Node2D.NOTIFICATION_ENTER_CANVAS:
-			print(name, ": _notification(NOTIFICATION_ENTER_CANVAS)")
-		Node2D.NOTIFICATION_VISIBILITY_CHANGED:
-			print(name, ": _notification(NOTIFICATION_VISIBILITY_CHANGED)")
-		Node3D.NOTIFICATION_ENTER_WORLD:
-			print(name, ": _notification(NOTIFICATION_ENTER_WORLD (Node3D) or NOTIFICATION_MOUSE_ENTER (Control))")
-		2000:
-			print(name, ": _notification(NOTIFICATION_TRANSFORM_CHANGED)")
 		_:
-			print(name, ": _notification(", what, ")")
+			print(name, ": _notification(constant ", what, ")")
 
 func _input(event: InputEvent) -> void:
-	print(name, ": _input(", event.as_text(), ")")
+	if input_logging:
+		print(name, ": _input(", event.as_text(), ")")
 
 func _shortcut_input(event: InputEvent) -> void:
-	print(name, ": _shortcut_input(", event.as_text(), ")")
+	if input_logging:
+		print(name, ": _shortcut_input(", event.as_text(), ")")
 
 func _unhandled_input(event: InputEvent) -> void:
-	print(name, ": _unhandled_input(", event.as_text(), ")")
+	if input_logging:
+		print(name, ": _unhandled_input(", event.as_text(), ")")
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	print(name, ": _unhandled_key_input(", event.as_text(), ")")
+	if input_logging:
+		print(name, ": _unhandled_key_input(", event.as_text(), ")")
 
 func _enter_tree() -> void:
 	print(name, ": _enter_tree() init_number: ", self_init_number)
@@ -115,18 +152,33 @@ func _exit_tree() -> void:
 func _ready() -> void:
 	print(name, ": _ready()")
 
+func _physics_process(_delta: float) -> void:
+	if process_logging:
+		print("pp", self_init_number)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if process_count < MAX_PROCESS_COUNT:
-		process_count += 1
-		print(name, ": _process()")
-
-func _physics_process(_delta: float) -> void:
-	if physics_process_count < MAX_PROCESS_COUNT:
-		physics_process_count += 1
-		print(name, ": _physics_process()")
+	if process_logging:
+		print("p", self_init_number)
 
 func _draw() -> void:
-	if draw_count < MAX_PROCESS_COUNT:
-		draw_count += 1
-		print(name, ": _draw()")
+	print(name, ": _draw()")
+
+func _pressed() -> void:
+	print(name, ": _pressed()")
+	if is_process_toggle:
+		process_logging = !process_logging
+	elif is_input_toggle:
+		input_logging = !input_logging
+
+func _button_down_sig() -> void:
+	print(name, ": _button_down_sig()")
+
+func _button_up_sig() -> void:
+	print(name, ": _button_up_sig()")
+
+func _pressed_sig() -> void:
+	print(name, ": _pressed_sig()")
+
+func _toggled_sig(toggled_on: bool) -> void:
+	print(name, ": _toggled_sig(", toggled_on, ")")
