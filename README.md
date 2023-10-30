@@ -21,7 +21,7 @@ Most notifications are given to all nodes before moving on to the next notificat
 -  `_process()` and `NOTIFICATION_PROCESS` happen in that order for each node before moving to the next node.
 
 ## Signals
-When a signal is emitted, it is recieved in the order that the connections were made. Signals are received immediately when they are emitted, even in the middle of a `_process` loop, for example.
+When a signal is emitted, it is recieved in the order that the connections were made. Signals are received immediately when they are emitted, even in the middle of a `_process` sequence, for example.
 
 ## `_input*` Methods, `Button` Methods, etc.
 `_input*` methods are called between `_process` and `_physics_process` calls and do not interrupt the sequence of `_process` or `_process_physics`. `Button` signals and methods are similiarly called after the all of the `_input*` methods have been completed.
