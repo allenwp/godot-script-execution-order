@@ -28,3 +28,8 @@ When a signal is emitted, it is recieved in the order that the connections were 
 
 ## `queue_free()`
 `queue_free()` will free those objects without interrupting the `_process` or `_physics_process` sequence.
+
+# Example Log
+Here is an example of the output from the project. It is not uncommon for the output to overflow when moving a mouse around, but input logging can be disabled to reduce log messages.
+
+[script-execution-log-example.txt](https://github.com/allenwp/godot-script-execution-order/files/13210106/script-execution-log-example.txt)
