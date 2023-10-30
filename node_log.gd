@@ -1,7 +1,5 @@
 class_name NodeLog extends Node
 
-const MAX_PROCESS_COUNT: int = 3
-
 static var init_count: int = 0
 static var static_member: int = 42
 
@@ -14,6 +12,8 @@ var physics_process_count: int = 0
 @export var is_input_toggle: bool = false
 static var process_logging: bool = true
 static var input_logging: bool = true
+
+signal sig
 
 var member: int = 42
 var property_member: int = 42:
@@ -94,11 +94,9 @@ func _notification(what: int) -> void:
 		NOTIFICATION_INTERNAL_PROCESS:
 			print(name, ": _notification(NOTIFICATION_INTERNAL_PROCESS)")
 		NOTIFICATION_PROCESS:
-			if process_count < MAX_PROCESS_COUNT:
-				print(name, ": _notification(NOTIFICATION_PROCESS)")
+			print(name, ": _notification(NOTIFICATION_PROCESS)")
 		NOTIFICATION_PHYSICS_PROCESS:
-			if physics_process_count < MAX_PROCESS_COUNT:
-				print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
+			print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
 		NOTIFICATION_PARENTED:
 			print(name, ": _notification(NOTIFICATION_PARENTED)")
 		NOTIFICATION_CHILD_ORDER_CHANGED:
@@ -153,13 +151,18 @@ func _ready() -> void:
 	print(name, ": _ready()")
 
 func _physics_process(_delta: float) -> void:
+	physics_process_count += 1
 	if process_logging:
 		print("pp", self_init_number)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	process_count += 1
 	if process_logging:
 		print("p", self_init_number)
+	if process_count % 100 == 0 && sig.get_connections().size() > 0:
+		print(name, ": emitting signal!")
+		sig.emit()
 
 func _draw() -> void:
 	print(name, ": _draw()")
@@ -182,3 +185,6 @@ func _pressed_sig() -> void:
 
 func _toggled_sig(toggled_on: bool) -> void:
 	print(name, ": _toggled_sig(", toggled_on, ")")
+
+func _custom_sig() -> void:
+	print(name, ": recieved signal!")
