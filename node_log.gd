@@ -1,5 +1,7 @@
 class_name NodeLog extends Node
 
+const MAX_PROCESS_COUNT: int = 3
+
 static var init_count: int = 0
 static var static_member: int = 42
 static var process_logging: bool = true
@@ -42,8 +44,8 @@ static func _static_init() -> void:
 	print("NodeLog: _static_init() (static_member: ", static_member, ")")
 
 func _notification(what: int) -> void:
-	var matched := true
 	if is_instance_of(self, Control):
+		var matched := true
 		match what:
 			Control.NOTIFICATION_FOCUS_ENTER:
 				print(name, ": _notification(Control.NOTIFICATION_FOCUS_ENTER)")
@@ -51,11 +53,11 @@ func _notification(what: int) -> void:
 				print(name, ": _notification(Control.NOTIFICATION_MOUSE_ENTER)")
 			_:
 				matched = false
-	if matched:
-		return
+		if matched:
+			return
 
-	matched = true
 	if is_instance_of(self, CanvasItem):
+		var matched := true
 		match what:
 			CanvasItem.NOTIFICATION_DRAW:
 				print(name, ": _notification(CanvasItem.NOTIFICATION_DRAW)")
@@ -67,11 +69,11 @@ func _notification(what: int) -> void:
 				print(name, ": _notification(CanvasItem.NOTIFICATION_TRANSFORM_CHANGED)")
 			_:
 				matched = false
-	if matched:
-		return
+		if matched:
+			return
 
-	matched = true
 	if is_instance_of(self, Node3D):
+		var matched := true
 		match what:
 			Node3D.NOTIFICATION_ENTER_WORLD:
 				print(name, ": _notification(Node3D.NOTIFICATION_ENTER_WORLD)")
@@ -79,8 +81,8 @@ func _notification(what: int) -> void:
 				print(name, ": _notification(Node3D.NOTIFICATION_TRANSFORM_CHANGED)")
 			_:
 				matched = false
-	if matched:
-		return
+		if matched:
+			return
 
 	match what:
 		NOTIFICATION_READY:
@@ -96,9 +98,11 @@ func _notification(what: int) -> void:
 		NOTIFICATION_INTERNAL_PROCESS:
 			print(name, ": _notification(NOTIFICATION_INTERNAL_PROCESS)")
 		NOTIFICATION_PROCESS:
-			print(name, ": _notification(NOTIFICATION_PROCESS)")
+			if process_count < MAX_PROCESS_COUNT:
+				print(name, ": _notification(NOTIFICATION_PROCESS)")
 		NOTIFICATION_PHYSICS_PROCESS:
-			print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
+			if physics_process_count < MAX_PROCESS_COUNT:
+				print(name, ": _notification(NOTIFICATION_PHYSICS_PROCESS)")
 		NOTIFICATION_PARENTED:
 			print(name, ": _notification(NOTIFICATION_PARENTED)")
 		NOTIFICATION_CHILD_ORDER_CHANGED:
