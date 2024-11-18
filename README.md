@@ -17,7 +17,7 @@ Most execution is done from top to bottom of the order of the scene if all nodes
 - `_input()` and `_unhandled_input()` are called bottom to top. This means nodes later in the tree get first chance to handle input.
 - `_exit_tree()` and related notifications are called bottom to top. (Conversely, `NOTIFICATION_UNPARENTED` are called top to bottom.)
 
-![image](https://github.com/allenwp/godot-script-execution-order/assets/17506573/9e5a0b64-9119-4368-82ab-69092fa36885)
+![script-execution-order](https://github.com/user-attachments/assets/e0642a00-c286-4a3d-ad76-7ee4aca6bb8d)
 
 Most notifications are given to all nodes before moving on to the next notification. Exceptions to this are:
 -  `_ready()`, `NOTIFICATION_READY`, and `NOTIFICATION_POST_ENTER_TREE` happen in that order for each node before moving to the next node.
